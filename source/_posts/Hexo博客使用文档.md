@@ -1,0 +1,110 @@
+
+---
+title: Ubuntu 14.04 Hexo博客使用文档
+date: 2016-06-01 10:15:39
+tags: Hexo
+---
+
+
+
+> Hexo简介
+
+hexo是一个基于Node.js的静态博客程序,可以方便的生成静态网页托管在Github上
+
+> 使用环境
+
+- Ubuntu 14.04
+- Node.js  v6.0.0
+- Npm 3.8.6     
+
+> 搭建步骤
+
+- 注册github账号,创建一个yourname.github.io的仓库
+- 买个喜欢的域名(阿里云:https://wanwang.aliyun.com)
+- 下载Node.js、Git(网上教程一大把)
+- 安装`Hexo npm install -g hexo`
+- 生成ssh密钥
+- 配置主题
+- 部署到Github上
+
+> 关键部分详细步骤
+
+#### 1.注册Github,创建Repository
+
+Repositories中创建一个以自己用户名+”.github.io”创建的repository（仓库）,记住要与用户名一致!然后再本地创建blog文件夹执行`git clone  你的仓库地址`
+
+#### 2.生成ssh密钥
+
+2.1 进入~/.ssh文件夹是否存在
+
+2.2 生成 ssh 密钥:`$ ssh-keygen -t rsa -C “your email address”`
+
+连续按3个回车（密码默认为空），得到 `id_rsa `和`id_rsa.pub` 文件，说明生成成功
+
+2.3添加密钥到 Github
+
+打开 Github，登录自己的账号后
+点击自己的头像->settings->SSH Keys->Add SSH key
+将本地 `id_rsa.pub` 中的内容粘贴到 Key 文本框中，随意输入一个 title，点击 Add Key 即可
+
+2.4测试是否成功:`ssh git@github.com`
+这样子就是成功了^,^~
+
+#### 3.初始化自己的博客
+
+3.1进入之前创建的blog文件夹,执行命令`hexo init`这样博客框架就完成了
+
+3.2执行命令`hexo generate` ,`hexo server`
+ 后本地服务器就开启了,这时候就可以在浏览器中已localhost:4000访问到了
+
+#### 4.配置主题
+
+到网上找一个喜欢的主题克隆到本地文件夹,然后扔到theme文件夹,更改_config.yml中的theme: 你的主题名称
+
+#### 5.部署博客到Github上
+在_config.yml最后一行加入
+
+```
+deploy:
+  type: git
+  repo: https://github.com/ColinFly/ColinFly.github.io.git
+  branch: master
+```
+
+执行命令`hexo g`进行部署，再执行命令`hexo d`进行发布，发布成功后，在浏览器中输入你Github的二级域名，如：https://colinfly.github.io 就可以看到你发布的网站了，不过如果想通过你申请的一级域名来访问的话还需要在你的blog的source目录下新建CNAME文件，里面输入你的域名地址，再进行部署及发布就行。
+每次部署的步骤，可按以下三步来进行：
+```
+hexo clean
+hexo generate
+hexo deploy
+```
+
+#### 6.hexo常用命令
+
+```
+hexo new"postName" #新建文章
+hexo new page"pageName" #新建页面
+hexo generate #生成静态页面至public目录
+hexo server #开启预览访问端口（默认端口4000，'ctrl + c'关闭server）
+hexo deploy #将.deploy目录部署到GitHub
+hexo help # 查看帮助
+hexo version #查看Hexo的版本
+```
+简写:
+
+```
+hexo n == hexo new
+hexo g == hexo generate
+hexo s == hexo server
+hexo d == hexo deploy
+```
+
+#### 7.常见问题
+
+1.`ERROR Deployer not found: git 或者 ERROR Deployer not found: github`，执行命令`npm install hexo-deployer-git --save`；
+2.`ERROR Plugin load failed: hexo-server`，执行命令：`sudo npm install hexo-server`
+
+#### 8.参考链接
+
+搭建Hexo博客中碰到的坑:http://www.jianshu.com/p/a2fe56d11c4f
+通过Hexo在Github上搭建博客教程http://www.jianshu.com/p/858ecf233db9
